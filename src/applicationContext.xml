@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       					   http://www.springframework.org/schema/beans/spring-beans.xsd
+       					   http://www.springframework.org/schema/aop 
+       					   http://www.springframework.org/schema/aop/spring-aop.xsd
+       					   http://www.springframework.org/schema/tx 
+       					   http://www.springframework.org/schema/tx/spring-tx.xsd
+       					   http://www.springframework.org/schema/context 
+       					   http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean name="student" class="cn.itcast.entity.Student">
+		<property name="name" value="张三"></property>
+		<property name="age" value="12"></property>
+	</bean>
+	
+	<bean name="customer" class="cn.itcast.entity.Customer">
+		<!-- 注入一个普通的字符串值 -->
+		<property name="name" value="Eric"></property>
+		
+		<!-- 注入一个集合 -->
+		<property name="orderSet" >
+			<set>
+				<ref bean="order1"/>
+				<ref bean="order2"/>
+			</set>
+		</property>
+	</bean>
+	
+	<bean name="order1" class="cn.itcast.entity.Order">
+		<property name="oid" value="1"/>
+		<property name="price" value="12.3"/>
+		<!-- 注入一个容器中的其他对象,使用 ref -->
+		<property name="customer" ref="customer"/>
+	</bean>
+	
+	<bean name="order2" class="cn.itcast.entity.Order">
+		<property name="oid" value="2"/>
+		<property name="price" value="123.4"/>
+		<property name="customer" ref="customer"/>
+	</bean>
+
+</beans>

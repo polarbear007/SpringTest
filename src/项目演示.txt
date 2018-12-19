@@ -1,0 +1,16 @@
+1、 首先，我们要会找到spring 项目需要的jar包，并在src目录下创建 applicationContext.xml 配置文件（都可以直接复制）
+
+2、 通过SpringDemo01.java 我们要有够懂得如何通过配置文件告诉spring 容器自动创建 student 对象，并注入我们需要的属性值。
+	要求: 【最基本】要会配置 bean 对象
+	 	【重要】   理解IOC （控制反转）和 DI（这依赖注入） 的概念和意义 
+	 	【重要】  依赖注入的两种方式： 构造方法注入      <constructor-arg >   : 必须提供有参构造
+	 				   setter 方法注入   <property >  : 必须提供setXXX() 方法， 注意 property 标签里面的name 要跟XXX对应
+	 	
+	 	【重要】 注入的类型：
+	 			1、 普通值    
+	 			2、 引用类型
+	 			3、 集合
+	 	
+	 	 【了解一下】 要会使用    ClassPathXmlApplicationContext 创建spring容器, 并通过容器拿到我们需要的 bean 对象。
+	 	 			整合以后，不需要我们这样显示地去创建容器和获取对象。
+	 	
