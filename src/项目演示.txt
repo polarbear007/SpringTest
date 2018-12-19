@@ -13,4 +13,41 @@
 	 	
 	 	 【了解一下】 要会使用    ClassPathXmlApplicationContext 创建spring容器, 并通过容器拿到我们需要的 bean 对象。
 	 	 			整合以后，不需要我们这样显示地去创建容器和获取对象。
-	 	
+
+2、 通过 SpringDemo02.java 演示一下 spring 容器中 bean 的生命周期
+			构造方法
+			setter 注入
+			BeanNameAware  ----> 通知一下你这个对象的 id 是啥
+			BeanFactoryAware -----> 通知一下你 beanFactory 对象是啥，但是这个 beanFactory 有什么用不知道
+			ApplicationContextAware----> 通知一下你容器的对象是啥，你可以直接从这个容器对象里面获取已经创建好的其他对象
+			MyBeanPostProcessor中的 before() 方法-----> 可以对容器中的 bean 对象在其初始化前进行拦截，你可以使用一个代理对象来替换bean对象
+			InitializingBean----> 你可以在这个接口的 afterPropertiesSet() 方法中执行一些另外的初始化操作
+			自定义的init() 方法执行了！----> 这个方法的方法名是我们自己定义的，但是需要在xml 里面配置 init-method 
+			MyBeanPostProcessor中的 after() 方法---->可以对容器中的 bean 对象在其初始化后再一次进行拦截，同样你也可以使用一个代理对象来替换bean 对象
+			
+			到此阶段， spring 容器中的 bean 对象已经完全初始化完毕！！！ 你可以随意获取并调用bean 对象里面的方法了！！
+			
+			DisposableBean : 调用destroy() 方法----> 在spring 容器关闭之前，会先调用里面的所有bean 对象的 destroy()方法进行销毁前的一些常规性操作
+			自定义的 destroy() 方法执行了！ ----> 这个方法的方法名是我们自己定义的，但是需要在 xml 里面配置 destroy-method
+			
+3、 这里并不演示注解配置bean 和 依赖注入，但是你要明白下面的这些注解的含义：
+	使用注解下面这些注解之前，我们一定要先在配置文件配置下面信息，这样子注解才能生效：
+	<context:component-scan base-package="xxxx" />
+	<context:annotation-config>
+	
+	配置bean 对象的注解 【常用】
+		@Component
+		@Controller
+		@Service
+		@Repository
+		
+	配置 setter 注入的注解【常用】 
+		@Autowired
+		@Qualifier
+		@Resource
+		
+	配置 bean 对象作用域的注解【常用】
+		@Scope----->   singleton/ prototype【一定要会】【默认就是单例的，如果配置 struts的action 一定要配置 prototype】
+					   request/ session/ globalSession 【了解】
+	配置	 @PostConstruct    相当于xml配置自定义的 init 方法：  init-method
+		 @PreDestroy       相当于 xml 配置自定义的 destroy 方法： destroy-method	

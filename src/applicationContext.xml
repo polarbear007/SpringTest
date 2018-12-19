@@ -13,12 +13,12 @@
        					   http://www.springframework.org/schema/context 
        					   http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<bean name="student" class="cn.itcast.entity.Student">
+	<bean id="student" class="cn.itcast.entity.Student">
 		<property name="name" value="张三"></property>
 		<property name="age" value="12"></property>
 	</bean>
 	
-	<bean name="customer" class="cn.itcast.entity.Customer">
+	<bean id="customer" class="cn.itcast.entity.Customer">
 		<!-- 注入一个普通的字符串值 -->
 		<property name="name" value="Eric"></property>
 		
@@ -31,17 +31,23 @@
 		</property>
 	</bean>
 	
-	<bean name="order1" class="cn.itcast.entity.Order">
+	<bean id="order1" class="cn.itcast.entity.Order">
 		<property name="oid" value="1"/>
 		<property name="price" value="12.3"/>
 		<!-- 注入一个容器中的其他对象,使用 ref -->
 		<property name="customer" ref="customer"/>
 	</bean>
 	
-	<bean name="order2" class="cn.itcast.entity.Order">
+	<bean id="order2" class="cn.itcast.entity.Order">
 		<property name="oid" value="2"/>
 		<property name="price" value="123.4"/>
 		<property name="customer" ref="customer"/>
 	</bean>
 
+	<bean id="beanLifeCyCle" class="cn.itcast.entity.BeanLifeCyCle" init-method="myInit" destroy-method="myDestroy">
+		<property name="param" value="1234"></property>
+	</bean>
+	
+	<!-- 配置BeanPostProcessor, 不需要id -->
+	<bean class="cn.itcast.entity.MyBeanPostProcessor"></bean>
 </beans>
