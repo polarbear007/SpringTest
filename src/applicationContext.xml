@@ -17,37 +17,58 @@
 		<property name="name" value="张三"></property>
 		<property name="age" value="12"></property>
 	</bean>
-	
+
 	<bean id="customer" class="cn.itcast.entity.Customer">
 		<!-- 注入一个普通的字符串值 -->
 		<property name="name" value="Eric"></property>
-		
+
 		<!-- 注入一个集合 -->
-		<property name="orderSet" >
+		<property name="orderSet">
 			<set>
-				<ref bean="order1"/>
-				<ref bean="order2"/>
+				<ref bean="order1" />
+				<ref bean="order2" />
 			</set>
 		</property>
 	</bean>
-	
+
 	<bean id="order1" class="cn.itcast.entity.Order">
-		<property name="oid" value="1"/>
-		<property name="price" value="12.3"/>
+		<property name="oid" value="1" />
+		<property name="price" value="12.3" />
 		<!-- 注入一个容器中的其他对象,使用 ref -->
-		<property name="customer" ref="customer"/>
-	</bean>
-	
-	<bean id="order2" class="cn.itcast.entity.Order">
-		<property name="oid" value="2"/>
-		<property name="price" value="123.4"/>
-		<property name="customer" ref="customer"/>
+		<property name="customer" ref="customer" />
 	</bean>
 
-	<bean id="beanLifeCyCle" class="cn.itcast.entity.BeanLifeCyCle" init-method="myInit" destroy-method="myDestroy">
+	<bean id="order2" class="cn.itcast.entity.Order">
+		<property name="oid" value="2" />
+		<property name="price" value="123.4" />
+		<property name="customer" ref="customer" />
+	</bean>
+
+	<bean id="beanLifeCyCle" class="cn.itcast.entity.BeanLifeCyCle"
+		init-method="myInit" destroy-method="myDestroy">
 		<property name="param" value="1234"></property>
 	</bean>
-	
+
+	<!-- 创建被代理对象 -->
+	<bean id="targetImpl" class="cn.itcast.entity.TargetImpl"></bean>
+
+	<!-- 创建切面类对象 -->
+	<bean id="myAspect" class="cn.itcast.entity.MyAspect"></bean>
+
+	<!-- 注意： 因为我们实际要的是代理对象，而不是 targetImpl 对象本身，所以class 属性要使用 ProxyFactoryBean的getObject() 
+		方法来生成代理对象 -->
+	<bean id="ProxyTargetImpl"
+		class="org.springframework.aop.framework.ProxyFactoryBean">
+		<!-- 注入被代理对象 -->
+		<property name="target" ref="targetImpl"></property>
+		<!-- 注入被代理对象所实现的接口，本来是一个 Class<?>[] 数组，如果只有一个的话，可以直接写value; 如果有多个，就要写 array子标签 
+			虽然要的是 Class[]， 但是我们只需要写接口的全路径名即可，因为只要有全路径名， 就可以通过 Class.forName("xxx")获取Class对象 -->
+		<property name="interfaces" value="cn.itcast.entity.Target"></property>
+		<!-- 注入切面类的引用，本来是一个 String[], 如果只有一个的话，可以直接写 ref; 如果有多个，就要写 array子标签 切面类对象不管有多少个，也需要由spring容器来创建，这里直接写 
+			ref 引用对应的 id -->
+		<property name="interceptorNames" ref="myAspect"></property>
+	</bean>
+
 	<!-- 配置BeanPostProcessor, 不需要id -->
 	<bean class="cn.itcast.entity.MyBeanPostProcessor"></bean>
 </beans>
