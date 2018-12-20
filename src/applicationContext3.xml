@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       					   http://www.springframework.org/schema/beans/spring-beans.xsd
+       					   http://www.springframework.org/schema/aop 
+       					   http://www.springframework.org/schema/aop/spring-aop.xsd
+       					   http://www.springframework.org/schema/tx 
+       					   http://www.springframework.org/schema/tx/spring-tx.xsd
+       					   http://www.springframework.org/schema/context 
+       					   http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- 创建被代理对象 -->
+	<bean id="targetImpl" class="cn.itcast.entity.TargetImpl"></bean>
+
+	<!-- 创建切面类对象 -->
+	<bean id="myAspect" class="cn.itcast.entity.MyAspect2"></bean>
+
+	<!-- 这一次我们不需要使用什么 ProxyFactoryBean了，可以直接使用  aop 标签 -->
+	<aop:config proxy-target-class="true">
+		<!-- 配置切面表达式 -->
+		<aop:pointcut expression="execution(* cn.itcast.entity.*.*(..))" id="pointcutId"/>
+		
+		<!-- 配置切面类 -->
+		<aop:aspect ref="myAspect" >
+			<aop:before method="before" pointcut-ref="pointcutId" />
+			<aop:around method="around" pointcut-ref="pointcutId"/>
+			<aop:after-throwing method="afterThrowing" throwing="e" pointcut-ref="pointcutId"/>
+			<aop:after-returning method="afterReturning" returning="returning" pointcut-ref="pointcutId"/>
+			<aop:after method="after" pointcut-ref="pointcutId"/>
+		</aop:aspect>
+	</aop:config>
+</beans>
