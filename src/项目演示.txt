@@ -33,7 +33,7 @@
 3、 这里并不演示注解配置bean 和 依赖注入，但是你要明白下面的这些注解的含义：
 	使用注解下面这些注解之前，我们一定要先在配置文件配置下面信息，这样子注解才能生效：
 	<context:component-scan base-package="xxxx" />
-	<context:annotation-config>
+	<context:annotation-config />
 	
 	配置bean 对象的注解 【常用】
 		@Component
@@ -145,4 +145,19 @@
 				
 				缺点： 虽然你的方法名可以随意 ，但是你的方法必须接收特定的参数！！！ 
 						因为没有接口规范，这些参数你得死记硬背下来！！！【其实还不如用接口呢】
+						
+6、 使用全自动aop 编程的另一个好处在于： 我们可以使用注解开发！！！
+			
+			首先：我们应该在配置文件中配置下面的信息：
+			<context:component-scan base-package="xxxx">
+			<aop:aspectj-autoproxy proxy-target-class="true">
+			
+				@before
+				@round
+				@afterReturning
+				@afterThrowing
+				@after
+				
+				@pointcut
+			
 		

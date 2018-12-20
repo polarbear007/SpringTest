@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       					   http://www.springframework.org/schema/beans/spring-beans.xsd
+       					   http://www.springframework.org/schema/aop 
+       					   http://www.springframework.org/schema/aop/spring-aop.xsd
+       					   http://www.springframework.org/schema/tx 
+       					   http://www.springframework.org/schema/tx/spring-tx.xsd
+       					   http://www.springframework.org/schema/context 
+       					   http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- 创建被代理对象 -->
+	<bean id="targetImpl" class="cn.itcast.entity.TargetImpl"></bean>
+
+	<!-- 创建切面类对象 
+		  如果我们要使用注解进行 aop 开发，那么千万不要在 xml 里面去配置切面类对象了，请到切面类上面添加
+		  @component
+		  @aspect
+		 这两个注解
+	-->
+
+	<!-- 这一次我们连aop 标签都不需要了，直接使用aop 注解 -->
+	<context:component-scan base-package="cn.itcast.entity"/>
+	<context:annotation-config/>
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+</beans>

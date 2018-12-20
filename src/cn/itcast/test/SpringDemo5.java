@@ -5,14 +5,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import cn.itcast.entity.Target;
 
-// 自动 aop 编程，引入了aspectj 框架和标签，我们可以通过 切入点表达式来选择 对哪个包下的哪个类的哪个方法 进行什么样的加强
-// 相比半自动  aop 编程的最大优势就在于此，我们可以只通过少量的配置，就完成对多个代理对象的
-// 半自动 aop 编程，你必须要一个代理对象一个 bean 标签去配置，很烦
+// 【注意】 使用注解开发 aop 的话， 切面类对象一定不要在配置文件中去配置了，而应该一起使用注解
+//  @component
+//  @aspect
 
 public class SpringDemo5 {
 	@Test
 	public void testAOP1() {
-		String xmlPath = "applicationContext3.xml";
+		String xmlPath = "applicationContext4.xml";
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(xmlPath);
 		
 		Target proxyBean = (Target)context.getBean("targetImpl");
