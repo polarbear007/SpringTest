@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       					   http://www.springframework.org/schema/beans/spring-beans.xsd
+       					   http://www.springframework.org/schema/aop 
+       					   http://www.springframework.org/schema/aop/spring-aop.xsd
+       					   http://www.springframework.org/schema/tx 
+       					   http://www.springframework.org/schema/tx/spring-tx.xsd
+       					   http://www.springframework.org/schema/context 
+       					   http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- 创建被代理对象 -->
+	<bean id="targetImpl" class="cn.itcast.entity.TargetImpl"></bean>
+
+	<!-- 创建切面类对象 -->
+	<bean id="myAspect" class="cn.itcast.entity.MyAspect"></bean>
+
+	<!-- 注意： 因为我们实际要的是代理对象，而不是 targetImpl 对象本身，所以class 属性要使用 ProxyFactoryBean的getObject() 
+		方法来生成代理对象 -->
+	<bean id="proxyTargetImpl" class="org.springframework.aop.framework.ProxyFactoryBean">
+		
+		<!-- 注入被代理对象所实现的接口，本来是一个 Class<?>[] 数组，如果只有一个的话，可以直接写value; 如果有多个，就要写 array子标签 
+			虽然要的是 Class[]， 但是我们只需要写接口的全路径名即可，因为只要有全路径名， 就可以通过 Class.forName("xxx")获取Class对象 -->
+		<property name="interfaces" value="cn.itcast.entity.Target"></property>
+		
+		<!-- 注入被代理对象 -->
+		<property name="target" ref="targetImpl"></property>
+		
+		<!-- 注入切面类的引用，本来是一个 String[], 如果只有一个的话，可以直接写value; 
+			如果有多个，就要写 array子标签,然后用多个 value 子标签写上多个切面类对应的 id 值
+			为什么明明是引用容器里面的对象，却使用的是 value 而不是 ref? 
+			因为这里要的是String[]  而不是 Object[], 数组里面的元素要的是字符串值，而不是某个对象的引用
+		-->
+		<property name="interceptorNames" value="myAspect"></property>
+		
+		<!-- 设置要使用 jdk 动态代理还是使用cglib 代理， 不设置默认是 jdk  -->
+		<property name="optimize" value="true"></property>
+	</bean>
+	
+</beans>
