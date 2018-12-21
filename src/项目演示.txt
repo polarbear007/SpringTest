@@ -160,4 +160,21 @@
 				
 				@pointcut
 			
+7、 	了解一下 jdbcTemplate 的使用步骤：【了解一下就好了，我们几乎不用】	
+		dao 层继承   jdbcDaoSupport 类，然后配置 dao 类的时候，注入dataSource 参数
+		service 层通过注入dao层的对象，调用 dao 层的方法
 		
+		jdbcTemplate 对象方法分为三大类：
+			execute()  可以执行任何sql, 一般用来 建库、建表之类sql 语句
+			update()   可以用来执行对数据的增删改语句
+			query()    可以用来执行查询语句
+		
+		【注意】查询的结果集如果是多列的，那么映射的结果应该是javabean， 这个时候我们匹配的java类型应该使用：
+				this.getJdbcTemplate().queryForObject("select * from t_student where sid = ?",
+					new BeanPropertyRowMapper<Student>(Student.class), sid);  
+			  
+			  如果查询的结果是单列的，那么我们可以使用最基本的类型来进行匹配：
+			  	this.getJdbcTemplate().queryForObject("select count(*) from t_student", Long.class);
+			  
+
+8、 事务管理：	
